@@ -1,15 +1,12 @@
 #!/bin/bash
 
 function fn_exit_with_status() {
-	printf "$(basename ${BASH_SOURCE[1]}) : ${FUNCNAME[1]}[${BASH_LINENO[0]}] : exiting with status : $1\n"
+	fn_print_msg "$(basename ${BASH_SOURCE[2]}) : ${FUNCNAME[2]}[${BASH_LINENO[1]}] : exiting with status : $1"
 	exit $1
 }
 
 function fn_exit_with_fatal_error() {
-	if [ "${LOGSYSTEM}" == 'on' ]; then
-		fn_log "${programname} : [ FATAL ] : $@\n"
-	fi
-	printf " ${programname} : [ FATAL ] : $@\n"
+	fn_print_msg "${programname} : [ FATAL ] : $@"
 	fn_exit_with_status 2
 }
 

@@ -48,6 +48,13 @@ function fn_print_status_ok_el() {
 	printf "[ OK ]\n"
 }
 
+function fn_print_msg() {
+	if [ "${LOGSYSTEM}" == 'on' ]; then
+		fn_log "${@}"
+	fi
+	printf "${@}\n"
+}
+
 function fn_log() {
 	printf "$(date '+%Y %b %d %H:%M:%S') $@\n" >> "${logrootdir}/${logfile}"
 }
