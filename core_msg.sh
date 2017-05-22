@@ -26,7 +26,10 @@ function fn_logs_init() {
 	if [ "${logtype}" == 'own' ]; then
 		if [ ! -d "${logrootdir:=${defaultlogrootdir}}/${programname}" ]; then
 			mkdir -p "${logrootdir}/${programname}"
-			fn_check_last_status_fatal 'making log directory failed !'
+			if [ $? -ne 0 ]; then
+				LOGSYSTEM='off'
+				fn_exit_with_fatal_error 'making log directory failed !'
+			fi
 		fi
 
 		logrootdir+="/${programname}"
@@ -34,8 +37,11 @@ function fn_logs_init() {
 		if [ -f "${logrootdir}/${logfile:=${defaultlogfile}}" ]; then
 			printf "rotating log file : "
 			mv "${logrootdir}/${logfile}" "${logrootdir}/${logfile/.log/}-${daterun}.log"
-			fn_check_last_status_fatal 'log file can not be rotated !'
-			fn_print_status_ok_el
+			if [ $? -ne 0 ]; then
+				LOGSYSTEM='off'
+				fn_exit_with_fatal_error 'log file can not be rotated !'
+			fi
+			fn_print_status_ok_eol
 		fi
 
 		printf "log file : ${logrootdir}/${logfile}\n"
@@ -44,7 +50,7 @@ function fn_logs_init() {
 	fi
 }
 
-function fn_print_status_ok_el() {
+function fn_print_status_ok_eol() {
 	printf "[ OK ]\n"
 }
 

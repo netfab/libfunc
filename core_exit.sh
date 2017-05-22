@@ -6,7 +6,13 @@ function fn_exit_with_status() {
 }
 
 function fn_exit_with_fatal_error() {
-	fn_print_msg "${programname} : [ FATAL ] : $@"
+	local sourcefile=""
+	if [ -n "${BASH_SOURCE[2]}" ]; then
+		sourcefile="$(basename ${BASH_SOURCE[2]})"
+	else
+		sourcefile="$(basename ${BASH_SOURCE[1]})"
+	fi
+	fn_print_msg "${programname} : ${sourcefile} : [ FATAL ] : $@"
 	fn_exit_with_status 2
 }
 
