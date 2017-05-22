@@ -1,12 +1,13 @@
 #!/bin/bash
 
-programnameerror='You must set the ${programname} bash variable.'
-logtypeerror='You must set the ${logtype} bash variable.'
-
-defaultlogrootdir='/var/tmp'
-defaultlogfile="${programname:?${programnameerror}}-script.log"
 
 function fn_logs_init() {
+	local -r programnameerror='You must set the ${programname} bash variable.'
+	local -r logtypeerror='You must set the ${logtype} bash variable.'
+
+	local -r defaultlogrootdir='/var/tmp'
+	local -r defaultlogfile="${programname:?${programnameerror}}-script.log"
+
 	case "${logtype:?${logtypeerror}}" in
 		'own'|'system'|'systemd') ;;
 		*) fn_exit_with_fatal_error "wrong \${logtype} value : ${logtype}" ;;
