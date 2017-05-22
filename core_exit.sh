@@ -6,7 +6,10 @@ function fn_exit_with_status() {
 }
 
 function fn_exit_with_fatal_error() {
-	printf "[ FATAL ] : ${programname} : $@\n"
+	if [ "${LOGSYSTEM}" == 'on' ]; then
+		fn_log "${programname} : [ FATAL ] : $@\n"
+	fi
+	printf " ${programname} : [ FATAL ] : $@\n"
 	fn_exit_with_status 2
 }
 
