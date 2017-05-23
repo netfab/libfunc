@@ -8,8 +8,40 @@ function fn_logs_init() {
 	local -r defaultlogfile="${programname:?${programnameerror}}-script.log"
 
 	case "${logsystem:?${logsystemerror}}" in
-		'own'|'system'|'systemd')
+		'own')
 			printf "log system : ${logsystem}\n"
+
+			if [ ! -d "${logrootdir:=${defaultlogrootdir}}/${programname}" ]; then
+				mkdir -p "${logrootdir}/${programname}"
+				if [ $? -ne 0 ]; then
+					logsystem='off'
+					fn_exit_with_fatal_error 'making log directory failed !'
+				fi
+			fi
+
+			logrootdir+="/${programname}"
+
+			if [ -f "${logrootdir}/${logfile:=${defaultlogfile}}" ]; then
+				printf "rotating log file : "
+				mv "${logrootdir}/${logfile}" "${logrootdir}/${logfile/.log/}-${daterun}.log"
+				if [ $? -ne 0 ]; then
+					logsystem='off'
+					fn_exit_with_fatal_error 'log file can not be rotated !'
+				fi
+				fn_print_status_ok_eol
+			fi
+
+			printf "log file : ${logrootdir}/${logfile}\n"
+		;;
+		'system')
+			printf "log system : ${logsystem}\n"
+			logsystem='off' # TODO
+			fn_exit_with_fatal_error '[ FIXME NOT IMPLEMENTED FIXME ]'
+		;;
+		'systemd')
+			printf "log system : ${logsystem}\n"
+			logsystem='off' # TODO
+			fn_exit_with_fatal_error '[ FIXME NOT IMPLEMENTED FIXME ]'
 		;;
 		'off')
 			printf "log system disabled by configuration request\n"
@@ -20,33 +52,6 @@ function fn_logs_init() {
 			fn_exit_with_fatal_error "wrong \${logsystem} value : ${tmplog}"
 		;;
 	esac
-
-	if [ "${logsystem}" == 'own' ]; then
-		if [ ! -d "${logrootdir:=${defaultlogrootdir}}/${programname}" ]; then
-			mkdir -p "${logrootdir}/${programname}"
-			if [ $? -ne 0 ]; then
-				logsystem='off'
-				fn_exit_with_fatal_error 'making log directory failed !'
-			fi
-		fi
-
-		logrootdir+="/${programname}"
-
-		if [ -f "${logrootdir}/${logfile:=${defaultlogfile}}" ]; then
-			printf "rotating log file : "
-			mv "${logrootdir}/${logfile}" "${logrootdir}/${logfile/.log/}-${daterun}.log"
-			if [ $? -ne 0 ]; then
-				logsystem='off'
-				fn_exit_with_fatal_error 'log file can not be rotated !'
-			fi
-			fn_print_status_ok_eol
-		fi
-
-		printf "log file : ${logrootdir}/${logfile}\n"
-	else
-		# TODO
-		printf "${logsystem}\n"
-	fi
 }
 
 function fn_print_status_ok_eol() {
