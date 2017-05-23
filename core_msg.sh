@@ -9,7 +9,7 @@ function fn_logs_init() {
 
 	case "${logsystem:?${logsystemerror}}" in
 		'own')
-			printf "log system : ${logsystem}\n"
+			printf "log system : ${logsystem}\n" >&2
 
 			if [ ! -d "${logrootdir:=${defaultlogrootdir}}/${programname}" ]; then
 				mkdir -p "${logrootdir}/${programname}"
@@ -31,20 +31,20 @@ function fn_logs_init() {
 				fn_print_status_ok_eol
 			fi
 
-			printf "log file : ${logrootdir}/${logfile}\n"
+			printf "log file : ${logrootdir}/${logfile}\n" >&2
 			;;
 		'system')
-			printf "log system : ${logsystem}\n"
+			printf "log system : ${logsystem}\n" >&2
 			logsystem='off' # TODO
 			fn_exit_with_fatal_error '[ FIXME NOT IMPLEMENTED FIXME ]'
 			;;
 		'systemd')
-			printf "log system : ${logsystem}\n"
+			printf "log system : ${logsystem}\n" >&2
 			logsystem='off' # TODO
 			fn_exit_with_fatal_error '[ FIXME NOT IMPLEMENTED FIXME ]'
 			;;
 		'off')
-			printf "log system disabled by configuration request\n"
+			printf "log system disabled by configuration request\n" >&2
 			;;
 		*)
 			local -r tmplog="${logsystem}"
@@ -61,6 +61,11 @@ function fn_print_status_ok_eol() {
 function fn_print_msg() {
 	fn_log "${@}"
 	printf "${@}\n"
+}
+
+function fn_print_error_msg() {
+	fn_log "${@}"
+	printf "${@}\n" >&2
 }
 
 function fn_log() {
