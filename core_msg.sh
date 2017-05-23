@@ -76,10 +76,6 @@ function fn_log() {
 			;;
 		'off')
 			;;
-		*)
-			# should not happen
-			printf "logsystem : %s\n" "${logsystem}"
-			;;
 	esac
 }
 
