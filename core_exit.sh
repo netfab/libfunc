@@ -7,11 +7,12 @@ function fn_exit_with_status() {
 
 function fn_exit_with_fatal_error() {
 	local sourcefile=""
-	if [ -n "${BASH_SOURCE[2]}" ]; then
-		sourcefile="$(basename ${BASH_SOURCE[2]})"
-	else
-		sourcefile="$(basename ${BASH_SOURCE[1]})"
-	fi
+	for x in 1 0; do
+		if [ -n "${BASH_SOURCE[${x}]}" ]; then
+			sourcefile="$(basename ${BASH_SOURCE[${x}]})"
+			break
+		fi
+	done
 	fn_print_msg "${programname} : ${sourcefile} : [ FATAL ] : $@"
 	fn_exit_with_status 2
 }
