@@ -32,20 +32,20 @@ function fn_logs_init() {
 			fi
 
 			printf "log file : ${logrootdir}/${logfile}\n"
-		;;
+			;;
 		'system')
 			printf "log system : ${logsystem}\n"
 			logsystem='off' # TODO
 			fn_exit_with_fatal_error '[ FIXME NOT IMPLEMENTED FIXME ]'
-		;;
+			;;
 		'systemd')
 			printf "log system : ${logsystem}\n"
 			logsystem='off' # TODO
 			fn_exit_with_fatal_error '[ FIXME NOT IMPLEMENTED FIXME ]'
-		;;
+			;;
 		'off')
 			printf "log system disabled by configuration request\n"
-		;;
+			;;
 		*)
 			local -r tmplog="${logsystem}"
 			logsystem='off'
@@ -59,15 +59,35 @@ function fn_print_status_ok_eol() {
 }
 
 function fn_print_msg() {
-	if [ "${logsystem}" != 'off' ]; then
-		fn_log "${@}"
-	fi
+	fn_log "${@}"
 	printf "${@}\n"
 }
 
 function fn_log() {
-	printf "$(date '+%Y %b %d %H:%M:%S') $@\n" >> "${logrootdir}/${logfile}"
+	case "${logsystem}" in
+		'own')
+			printf "$(date '+%Y %b %d %H:%M:%S') $@\n" >> "${logrootdir}/${logfile}"
+			;;
+		'system')
+			# TODO
+			;;
+		'systemd')
+			# TODO
+			;;
+		'off')
+			;;
+		*)
+			# should not happen
+			printf "logsystem : %s\n" "${logsystem}"
+			;;
+	esac
 }
 
 fn_logs_init
+unset -f fn_logs_init
 
+### redeclare logsystem with readonly attribute
+tmplog="${logsystem}"
+unset logsystem
+declare -r logsystem="${tmplog}"
+unset tmplog
