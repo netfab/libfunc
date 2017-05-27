@@ -33,7 +33,7 @@ function fn_getopts_check_options() {
 }
 
 function fn_getopts_init() {
-	local -r optionserror='You must set the ${programoptions} bash variable.'
+	local -r optionserror='You must set the ${programoptions} bash variable'
 
 	local x y reqarg opt longopt
 	for x in ${programoptions:?${optionserror}}; do
@@ -54,7 +54,7 @@ function fn_getopts_init() {
 			if [ ${options["${longopt}"]} != 'off' ]; then
 				if [ "${reqarg}" == 'on' ]; then
 					if [ "${y:0:1}" == '-' ]; then
-						fn_exit_with_fatal_error "Option --${longopt} requires an argument."
+						fn_exit_with_fatal_error "Option --${longopt} requires an argument"
 					fi
 					options["${longopt}"]="${y}"
 					reqarg='off'
@@ -71,7 +71,7 @@ function fn_getopts_init() {
 		done
 
 		if [ "${reqarg}" == 'on' ] && [ "${options["${longopt}"]}" == 'on' ]; then
-			fn_exit_with_fatal_error "Option --${longopt} requires an argument."
+			fn_exit_with_fatal_error "Option --${longopt} requires an argument"
 		fi
 	done
 
@@ -79,10 +79,45 @@ function fn_getopts_init() {
 	unset -f fn_getopts_check_options
 }
 
+function fn_option_value() {
+	local ret="${options[${1}]}"
+	if [ -z "${ret}" ]; then
+		fn_exit_with_fatal_error "Option --${1} is not defined"
+	fi
+	printf "${ret}"
+}
+
+function fn_option_enabled() {
+	local ret="${options[${1}]}"
+	if [ -z "${ret}" ]; then
+		fn_exit_with_fatal_error "Option --${1} is not defined"
+	fi
+	[[ ${ret} != 'off' ]]
+	return
+}
+
 fn_getopts_init $@
 unset -f fn_getopts_init
+
+###
+##	redeclare associative array readonly
+#
+cmd="declare -rgA 'options=("
+for x in ${!options[@]}; do
+	cmd+="[\"$x\"]=${options[$x]} "
+done
+cmd+=")'"
+
+unset -v options
+#printf "$cmd\n"
+eval "$cmd"
 
 #for x in ${!options[@]}; do
 #	printf "$x - ${options[$x]}\n"
 #done
+#options['pretend']=9
+
+#
+##
+###
 
