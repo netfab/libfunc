@@ -87,8 +87,7 @@ function fn_log() {
 fn_logs_init
 unset -f fn_logs_init
 
-### redeclare logsystem with readonly attribute
-tmplog="${logsystem}"
-unset logsystem
-declare -r logsystem="${tmplog}"
-unset tmplog
+fn_redeclare_variable_ro 'logsystem'
+fn_redeclare_variable_ro 'logrootdir'
+fn_redeclare_variable_ro 'logfile'
+

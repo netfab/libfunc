@@ -4,6 +4,10 @@ export LANG=C
 
 declare -r daterun=$(date '+%Y-%m-%d-%H:%M:%S')
 
+function fn_redeclare_variable_ro() {
+	declare -gr ${1}="${!1}"
+}
+
 source "${libfuncdir}/core_exit.sh"
 source "${libfuncdir}/core_msg.sh"
 source "${libfuncdir}/core_getopts.sh"
