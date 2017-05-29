@@ -30,6 +30,9 @@ function fn_setup_environment() {
 	export MY_DESKTOP_DIR="${XDG_DESKTOP_DIR:-$HOME/Desktop}"
 } # >>>
 
-fn_setup_environment
+
+if [ ${UID} -ne 0 ]; then
+	fn_setup_environment
+fi
 unset -f fn_setup_environment
 
