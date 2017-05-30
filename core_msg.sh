@@ -22,7 +22,7 @@ function fn_logs_init() {
 			logrootdir+="/${programname}"
 
 			if [ -f "${logrootdir}/${logfile:=${defaultlogfile}}" ]; then
-				printf "rotating log file : "
+				printf "rotating log file : " >&2
 				mv "${logrootdir}/${logfile}" "${logrootdir}/${logfile/.log/}-${daterun}.log"
 				if [ $? -ne 0 ]; then
 					logsystem='off'
@@ -55,7 +55,7 @@ function fn_logs_init() {
 }
 
 function fn_print_status_ok_eol() {
-	printf "[ OK ]\n"
+	printf "[ OK ]\n" >&2
 }
 
 function fn_print_msg() {
