@@ -8,6 +8,7 @@ function fn_redeclare_variable_ro() {
 	declare -gr ${1}="${!1}"
 }
 
+source "${libfuncdir}/core_ansi.sh"
 source "${libfuncdir}/core_exit.sh"
 source "${libfuncdir}/core_msg.sh"
 source "${libfuncdir}/core_getopts.sh"
