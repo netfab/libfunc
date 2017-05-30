@@ -64,8 +64,8 @@ function fn_print_msg() {
 }
 
 function fn_print_error_msg() {
-	fn_log "${@}"
-	printf "${@}\n" >&2
+	fn_log "[ ERROR ] ${@}"
+	printf "[ ERROR ] ${@}\n" >&2
 }
 
 function fn_print_warn_msg() {
