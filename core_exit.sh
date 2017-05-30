@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function fn_exit_with_status() {
-	fn_print_msg "$(basename ${BASH_SOURCE[2]}) : ${FUNCNAME[2]}[${BASH_LINENO[1]}] : exiting with status : $1"
+	fn_print_status_msg "$(basename ${BASH_SOURCE[2]}) : ${FUNCNAME[2]}[${BASH_LINENO[1]}] : exiting with status : $1"
 	exit $1
 }
 
