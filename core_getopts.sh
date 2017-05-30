@@ -25,7 +25,7 @@ function fn_getopts_check_options() {
 		done
 
 		if [ "${knownopt}" == 'unknown' ]; then
-			fn_exit_with_fatal_error "unknown option : ${1}"
+			fn_exit_with_error "unknown option : ${1}"
 		fi
 
 		shift $s
@@ -54,7 +54,7 @@ function fn_getopts_init() {
 			if [ ${options["${longopt}"]} != 'off' ]; then
 				if [ "${reqarg}" == 'on' ]; then
 					if [ "${y:0:1}" == '-' ]; then
-						fn_exit_with_fatal_error "Option --${longopt} requires an argument"
+						fn_exit_with_error "Option --${longopt} requires an argument"
 					fi
 					options["${longopt}"]="${y}"
 					reqarg='off'
@@ -71,7 +71,7 @@ function fn_getopts_init() {
 		done
 
 		if [ "${reqarg}" == 'on' ] && [ "${options["${longopt}"]}" == 'on' ]; then
-			fn_exit_with_fatal_error "Option --${longopt} requires an argument"
+			fn_exit_with_error "Option --${longopt} requires an argument"
 		fi
 	done
 
@@ -82,7 +82,7 @@ function fn_getopts_init() {
 function fn_option_value() {
 	local ret="${options[${1}]}"
 	if [ -z "${ret}" ]; then
-		fn_exit_with_fatal_error "Option --${1} is not defined"
+		fn_exit_with_error "Option --${1} is not defined"
 	fi
 	printf "${ret}"
 }
@@ -90,7 +90,7 @@ function fn_option_value() {
 function fn_option_enabled() {
 	local ret="${options[${1}]}"
 	if [ -z "${ret}" ]; then
-		fn_exit_with_fatal_error "Option --${1} is not defined"
+		fn_exit_with_error "Option --${1} is not defined"
 	fi
 	[[ ${ret} != 'off' ]]
 	return

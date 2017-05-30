@@ -5,7 +5,7 @@ function fn_exit_with_status() {
 	exit $1
 }
 
-function fn_exit_with_fatal_error() {
+function fn_exit_with_error() {
 	local sourcefile=""
 	for x in 1 0; do
 		if [ -n "${BASH_SOURCE[${x}]}" ]; then

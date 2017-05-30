@@ -15,7 +15,7 @@ function fn_logs_init() {
 				mkdir -p "${logrootdir}/${programname}"
 				if [ $? -ne 0 ]; then
 					logsystem='off'
-					fn_exit_with_fatal_error 'making log directory failed !'
+					fn_exit_with_error 'making log directory failed !'
 				fi
 			fi
 
@@ -26,7 +26,7 @@ function fn_logs_init() {
 				mv "${logrootdir}/${logfile}" "${logrootdir}/${logfile/.log/}-${daterun}.log"
 				if [ $? -ne 0 ]; then
 					logsystem='off'
-					fn_exit_with_fatal_error 'log file can not be rotated !'
+					fn_exit_with_error 'log file can not be rotated !'
 				fi
 				fn_print_status_ok_eol
 			fi
@@ -36,12 +36,12 @@ function fn_logs_init() {
 		'system')
 			printf "log system : ${logsystem}\n" >&2
 			logsystem='off' # TODO
-			fn_exit_with_fatal_error '[ FIXME NOT IMPLEMENTED FIXME ]'
+			fn_exit_with_error '[ FIXME NOT IMPLEMENTED FIXME ]'
 			;;
 		'systemd')
 			printf "log system : ${logsystem}\n" >&2
 			logsystem='off' # TODO
-			fn_exit_with_fatal_error '[ FIXME NOT IMPLEMENTED FIXME ]'
+			fn_exit_with_error '[ FIXME NOT IMPLEMENTED FIXME ]'
 			;;
 		'off')
 			printf "log system disabled by configuration request\n" >&2
@@ -49,7 +49,7 @@ function fn_logs_init() {
 		*)
 			local -r tmplog="${logsystem}"
 			logsystem='off'
-			fn_exit_with_fatal_error "wrong \${logsystem} value : ${tmplog}"
+			fn_exit_with_error "wrong \${logsystem} value : ${tmplog}"
 		;;
 	esac
 }
