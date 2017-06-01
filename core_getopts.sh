@@ -92,13 +92,37 @@ function fn_option_enabled() {
 	if [ -z "${ret}" ]; then
 		fn_exit_with_error "Option --${1} is not defined"
 	fi
-	[[ ${ret} != 'off' ]]
-	return
+	if [ ${ret} != 'off' ]; then
+		return 0
+	fi
+	if [ -v "${1}forced" ]; then
+		fn_print_info_msg "--${1} option forced"
+		return 0
+	fi
+	return 1
 }
 
 function fn_option_disabled() {
-	! fn_option_enabled "$1"
+	! fn_option_enabled "${1}"
 	return
+}
+
+function fn_forced_option() {
+	# check first if it is declared as a regular option
+	local value=$(fn_option_value "${1}")
+	# should be at least defined as 'off'
+	if [ -z "${value}" ]; then
+		fn_exit_with_error "sub-shell error"
+	fi
+	value='on'
+	case $# in
+		1) ;;
+		2) value="${2}";;
+		*) fn_exit_with_error "${FUNCNAME} wrong usage"
+	esac
+
+	local cmd="declare -rg ${1}forced=\"${value}\""
+	eval "$cmd"
 }
 
 fn_getopts_init $@

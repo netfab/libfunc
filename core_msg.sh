@@ -78,6 +78,11 @@ function fn_print_warn_msg() {
 	printf "[ WARN ] ${@}\n" >&2
 }
 
+function fn_print_info_msg() {
+	fn_log "[ INFO ] ${@}"
+	printf "[ INFO ] ${@}\n" >&2
+}
+
 function fn_log() {
 	case "${logsystem}" in
 		'own')
