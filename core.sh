@@ -2,6 +2,9 @@
 
 export LANG=C
 
+declare -r libfuncversion='0.1.0-dev'
+
+# used into core_getopts.sh
 declare -r daterun=$(date '+%Y-%m-%d-%H:%M:%S')
 
 function fn_redeclare_variable_ro() {
