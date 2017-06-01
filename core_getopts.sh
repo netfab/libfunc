@@ -96,6 +96,11 @@ function fn_option_enabled() {
 	return
 }
 
+function fn_option_disabled() {
+	! fn_option_enabled "$1"
+	return
+}
+
 fn_getopts_init $@
 unset -f fn_getopts_init
 
