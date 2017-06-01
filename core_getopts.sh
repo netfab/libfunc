@@ -125,6 +125,7 @@ function fn_forced_option() {
 	eval "$cmd"
 }
 
+fn_log "Command line : $0 $*"
 fn_getopts_init $@
 unset -f fn_getopts_init
 
