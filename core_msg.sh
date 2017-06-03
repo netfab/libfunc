@@ -35,8 +35,6 @@ function fn_logs_init() {
 			;;
 		'system')
 			printf "log system : ${logsystem}\n" >&2
-			logsystem='off' # TODO
-			fn_exit_with_error '[ FIXME NOT IMPLEMENTED FIXME ]'
 			;;
 		'systemd')
 			printf "log system : ${logsystem}\n" >&2
@@ -89,7 +87,7 @@ function fn_log() {
 			printf "$(date '+%Y %b %d %H:%M:%S') $@\n" >> "${logrootdir}/${logfile}"
 			;;
 		'system')
-			# TODO
+			logger -t "${programname} $USER" "$@"
 			;;
 		'systemd')
 			# TODO

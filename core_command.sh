@@ -15,7 +15,7 @@ function fn_run_command() {
 			(eval $@ 2>&1) >> "${logrootdir}/${logfile}"
 			;;
 		'system')
-			# TODO
+			(eval $@ 2>&1) | logger -t "${programname} $USER" &
 			;;
 		'systemd')
 			# TODO
