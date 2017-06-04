@@ -98,7 +98,7 @@ function fn_getopts_init() {
 function fn_option_value() {
 	local ret="${options[${1}]}"
 	if [ -z "${ret}" ]; then
-		fn_exit_with_error "Option --${1} is not defined"
+		fn_exit_with_error "Option --${1} is not declared"
 	fi
 	printf "${ret}"
 }
@@ -106,7 +106,7 @@ function fn_option_value() {
 function fn_option_enabled() {
 	local ret="${options[${1}]}"
 	if [ -z "${ret}" ]; then
-		fn_exit_with_error "Option --${1} is not defined"
+		fn_exit_with_error "Option --${1} is not declared"
 	fi
 	if [ ${ret} != 'off' ]; then
 		return 0
