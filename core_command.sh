@@ -28,13 +28,16 @@ function fn_run_command() {
 			;;
 		'system')
 			set -o pipefail
-			eval $@ 2>&1 | logger -t "${programname} $USER"
+			(eval $@ 2>&1) | logger -t "${programname} $USER"
 			ret=$?
 			;;
 		'systemd')
 			# TODO
+			fn_exit_with_error '[ FIXME NOT IMPLEMENTED FIXME ]'
 			;;
 		'off')
+			(eval $@)
+			ret=$?
 			;;
 	esac
 
