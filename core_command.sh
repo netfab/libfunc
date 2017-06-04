@@ -19,12 +19,17 @@
 function fn_run_command() {
 	fn_log "running command: $@"
 
+	local ret=255
+
 	case "${logsystem}" in
 		'own')
 			(eval $@ 2>&1) >> "${logrootdir}/${logfile}"
+			ret=$?
 			;;
 		'system')
-			(eval $@ 2>&1) | logger -t "${programname} $USER" &
+			set -o pipefail
+			eval $@ 2>&1 | logger -t "${programname} $USER"
+			ret=$?
 			;;
 		'systemd')
 			# TODO
@@ -33,7 +38,6 @@ function fn_run_command() {
 			;;
 	esac
 
-	local ret=$?
 	fn_log "command exited with status: ${ret}"
 	return ${ret}
 }
