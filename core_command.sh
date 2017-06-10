@@ -17,8 +17,6 @@
 #
 
 function fn_run_command() {
-	fn_log "running command: $@"
-
 	local ret=255
 
 	case "${logsystem}" in
@@ -45,3 +43,8 @@ function fn_run_command() {
 	return ${ret}
 }
 
+function fn_log_and_run_command() {
+	fn_log "running command: $@"
+	fn_run_command "$@"
+	return $?
+}
