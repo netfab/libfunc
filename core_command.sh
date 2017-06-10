@@ -18,6 +18,7 @@
 
 function fn_run_command() {
 	local ret=255
+	set -o pipefail
 
 	case "${logsystem}" in
 		'own')
@@ -25,7 +26,6 @@ function fn_run_command() {
 			ret=$?
 			;;
 		'system')
-			set -o pipefail
 			(eval $@ 2>&1) | logger -t "${programname} $USER"
 			ret=$?
 			;;
