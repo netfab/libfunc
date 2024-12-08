@@ -62,7 +62,7 @@ function fn_getopts_init() {
 		fi
 
 		options["${longopt}"]='off'
-		#printf "$opt $longopt $reqarg\n"
+		#printf '%s\n' "$opt $longopt $reqarg"
 
 		for y in $@; do
 			#printf "%s %s\n" "${longopt} $y"
@@ -76,7 +76,7 @@ function fn_getopts_init() {
 					reqarg='off'
 				fi
 
-				#printf "skipping ${longopt}\n"
+				#printf '%s\n' "skipping ${longopt}\n"
 				continue
 			fi
 
@@ -100,7 +100,7 @@ function fn_option_value() {
 	if [ -z "${ret}" ]; then
 		fn_exit_with_error "Option --${1} is not declared"
 	fi
-	printf "${ret}"
+	printf '%s' "${ret}"
 }
 
 function fn_option_enabled() {
@@ -155,11 +155,11 @@ done
 cmd+=")'"
 
 unset -v options
-#printf "$cmd\n"
+#printf '%s\n' "$cmd"
 eval "$cmd"
 
 #for x in ${!options[@]}; do
-#	printf "$x - ${options[$x]}\n"
+#	printf '%s\n' "$x - ${options[$x]}"
 #done
 #options['pretend']=9
 

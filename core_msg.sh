@@ -25,7 +25,7 @@ function fn_logs_init() {
 
 	case "${logsystem:?${logsystemerror}}" in
 		'own')
-			printf "log system : ${logsystem}\n" >&2
+			printf '%s\n' "log system : ${logsystem}" >&2
 
 			if [ ! -d "${logrootdir:=${defaultlogrootdir}}/${programname}" ]; then
 				mkdir -p "${logrootdir}/${programname}"
@@ -38,7 +38,7 @@ function fn_logs_init() {
 			logrootdir+="/${programname}"
 
 			if [ -f "${logrootdir}/${logfile:=${defaultlogfile}}" ]; then
-				printf "rotating log file : " >&2
+				printf '%s' "rotating log file : " >&2
 				mv "${logrootdir}/${logfile}" "${logrootdir}/${logfile/.log/}-${daterun}.log"
 				if [ $? -ne 0 ]; then
 					logsystem='off'
@@ -47,18 +47,18 @@ function fn_logs_init() {
 				fn_print_status_ok_eol
 			fi
 
-			printf "log file : ${logrootdir}/${logfile}\n" >&2
+			printf '%s\n' "log file : ${logrootdir}/${logfile}" >&2
 			;;
 		'system')
-			printf "log system : ${logsystem}\n" >&2
+			printf '%s\n' "log system : ${logsystem}" >&2
 			;;
 		'systemd')
-			printf "log system : ${logsystem}\n" >&2
+			printf '%s\n' "log system : ${logsystem}" >&2
 			logsystem='off' # TODO
 			fn_exit_with_error '[ FIXME NOT IMPLEMENTED FIXME ]'
 			;;
 		'off')
-			printf "log system disabled by configuration request\n" >&2
+			printf '%s\n' "log system disabled by configuration request" >&2
 			;;
 		*)
 			local -r tmplog="${logsystem}"
@@ -69,38 +69,38 @@ function fn_logs_init() {
 }
 
 function fn_print_status_ok_eol() {
-	printf "[ OK ]\n" >&2
+	printf '%s\n' "[ OK ]" >&2
 }
 
 function fn_print_msg() {
 	fn_log "${@}"
-	printf "${@}\n"
+	printf '%s\n' "${@}"
 }
 
 function fn_print_status_msg() {
 	fn_log "${@}"
-	printf "${@}\n" >&2
+	printf '%s\n' "${@}" >&2
 }
 
 function fn_print_error_msg() {
 	fn_log "[ ERROR ] ${@}"
-	printf "[ ERROR ] ${@}\n" >&2
+	printf '%s\n' "[ ERROR ] ${@}" >&2
 }
 
 function fn_print_warn_msg() {
 	fn_log "[ WARN ] ${@}"
-	printf "[ WARN ] ${@}\n" >&2
+	printf '%s\n' "[ WARN ] ${@}" >&2
 }
 
 function fn_print_info_msg() {
 	fn_log "[ INFO ] ${@}"
-	printf "[ INFO ] ${@}\n" >&2
+	printf '%s\n' "[ INFO ] ${@}" >&2
 }
 
 function fn_log() {
 	case "${logsystem}" in
 		'own')
-			printf "$(date '+%Y %b %d %H:%M:%S') $@\n" >> "${logrootdir}/${logfile}"
+			printf '%s\n' "$(date '+%Y %b %d %H:%M:%S') $@" >> "${logrootdir}/${logfile}"
 			;;
 		'system')
 			logger -t "${programname} $USER" "$@"
