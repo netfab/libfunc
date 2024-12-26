@@ -68,6 +68,20 @@ function fn_logs_init() {
 	esac
 }
 
+# ---
+# fn_print_status_tabs n
+#   --
+#   print n tabulations, n must be integer, min 1, max 7
+# ---
+function fn_print_status_tabs() {
+	local -ri num=$1
+	if [ ${num} -eq 0 ] || [ ${num} -gt 7 ]; then
+		fn_print_warn_msg "fn_print_status_tabs wrong num: ${num}"
+		return
+	fi
+	printf '\t%.s' $(seq 1 ${num}) >&2
+}
+
 function fn_print_status_ok_eol() {
 	printf '%s\n' "[ OK ]" >&2
 }
