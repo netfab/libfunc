@@ -16,26 +16,48 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+function fn_unset_command_output() {
+	unset -v CMD_OUTPUT
+}
+
+# ---
+# fn_get_previous_command_output 'foo'
+#   --
+#   Declare «foo» global variable with the output of previous runned command.
+#   Must be called only after «fn_run_command»
+# ---
+function fn_get_previous_command_output() {
+	local -r myvar=$1
+	if [ ! -v CMD_OUTPUT ]; then
+		fn_exit_with_error 'empty internal variable CMD_OUTPUT, did you run fn_run_command ?'
+	fi
+	declare -gr ${myvar}="${CMD_OUTPUT}"
+	fn_unset_command_output
+}
+
 function fn_run_command() {
 	local ret=255
-	set -o pipefail
+	#set -o pipefail
+
+	declare -g CMD_OUTPUT
 
 	case "${logsystem}" in
 		'own')
-			(eval $@ 2>&1) >> "${logrootdir}/${logfile}"
-			ret=$?
+			CMD_OUTPUT=$(eval "$@" 2>&1) >> "${logrootdir}/${logfile}"
+			ret=${PIPESTATUS[0]}
 			;;
 		'system')
-			(eval $@ 2>&1) | logger -t "${programname} $USER"
-			ret=$?
+			CMD_OUTPUT=$(eval $@ 2>&1)
+			ret=${PIPESTATUS[0]}
+			printf "${CMD_OUTPUT}" | logger -t "${programname} $USER"
 			;;
 		'systemd')
 			# TODO
 			fn_exit_with_error '[ FIXME NOT IMPLEMENTED FIXME ]'
 			;;
 		'off')
-			(eval $@)
-			ret=$?
+			CMD_OUTPUT=$(eval "$@")
+			ret=${PIPESTATUS[0]}
 			;;
 	esac
 
