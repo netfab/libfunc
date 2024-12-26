@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # libfunc - bash library defining utilities common functions
-# Copyright © 2017 netfab <netbox253@gmail.com>
+# Copyright © 2017-2025 netfab <netbox253@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

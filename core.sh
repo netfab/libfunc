@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # libfunc - bash library defining utilities common functions
-# Copyright © 2017 netfab <netbox253@gmail.com>
+# Copyright © 2017-2025 netfab <netbox253@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 export LANG=C
 
-declare -r libfuncversion='0.1.0'
+declare -r libfuncversion='0.1.1'
 
 # used into core_getopts.sh
 declare -r daterun=$(date '+%Y-%m-%d-%H:%M:%S')
