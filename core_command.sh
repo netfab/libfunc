@@ -31,7 +31,7 @@ function fn_get_previous_command_output() {
 	if [ ! -v CMD_OUTPUT ]; then
 		fn_exit_with_error 'empty internal variable CMD_OUTPUT, did you run fn_run_command ?'
 	fi
-	declare -gr ${myvar}="${CMD_OUTPUT}"
+	declare -g ${myvar}="${CMD_OUTPUT}"
 	fn_unset_command_output
 }
 
