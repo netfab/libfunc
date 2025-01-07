@@ -43,20 +43,21 @@ function fn_run_command() {
 
 	case "${logsystem}" in
 		'own')
-			CMD_OUTPUT=$(eval "$@" 2>&1) >> "${logrootdir}/${logfile}"
+			CMD_OUTPUT=$(eval "$@" 2>&1)
 			ret=${PIPESTATUS[0]}
+			printf "%s\n" "${CMD_OUTPUT}" >> "${logrootdir}/${logfile}"
 			;;
 		'system')
 			CMD_OUTPUT=$(eval $@ 2>&1)
 			ret=${PIPESTATUS[0]}
-			printf "${CMD_OUTPUT}" | logger -t "${programname} $USER"
+			printf "%s\n" "${CMD_OUTPUT}" | logger -t "${programname} $USER"
 			;;
 		'systemd')
 			# TODO
 			fn_exit_with_error '[ FIXME NOT IMPLEMENTED FIXME ]'
 			;;
 		'off')
-			CMD_OUTPUT=$(eval "$@")
+			CMD_OUTPUT=$(eval "$@" 2>&1)
 			ret=${PIPESTATUS[0]}
 			;;
 	esac
