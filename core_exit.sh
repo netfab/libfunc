@@ -16,19 +16,20 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-function fn_exit_with_status() {
+function fn_exit_with_status()
+{ # <<<
 	local -r sourcefile=$(basename ${BASH_SOURCE[1]})
 	local -r funcname=${FUNCNAME[0]}
 	local -ri lineno=${BASH_LINENO[0]}
 	fn_print_status_msg "${sourcefile}[${lineno}] : ${funcname} : $1"
 	exit $1
-}
+} # >>>
 
-function fn_exit_with_error() {
+function fn_exit_with_error()
+{ # <<<
 	local sourcefile=$(basename ${BASH_SOURCE[-1]})
 	local -r funcname=${FUNCNAME[0]}
 	local -ri lineno=${BASH_LINENO[0]}
 	fn_print_error_msg "${sourcefile}[${lineno}] : ${funcname} : $@"
 	fn_exit_with_status 2
-}
-
+} # >>>

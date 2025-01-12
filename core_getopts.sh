@@ -18,7 +18,8 @@
 
 declare -A options
 
-function fn_getopts_check_options() {
+function fn_getopts_check_options()
+{ # <<<
 	local knownopt x s reqarg opt longopt
 
 	while [ $# -ne 0 ]; do
@@ -46,9 +47,10 @@ function fn_getopts_check_options() {
 
 		shift $s
 	done
-}
+} # >>>
 
-function fn_getopts_init() {
+function fn_getopts_init()
+{ # <<<
 	local -r optionserror='You must set the ${programoptions} bash variable'
 
 	local x y reqarg opt longopt
@@ -93,17 +95,19 @@ function fn_getopts_init() {
 
 	fn_getopts_check_options $@
 	unset -f fn_getopts_check_options
-}
+} # >>>
 
-function fn_option_value() {
+function fn_option_value()
+{ # <<<
 	local ret="${options[${1}]}"
 	if [ -z "${ret}" ]; then
 		fn_exit_with_error "Option --${1} is not declared"
 	fi
 	printf '%s' "${ret}"
-}
+} # >>>
 
-function fn_option_enabled() {
+function fn_option_enabled()
+{ # <<<
 	local ret="${options[${1}]}"
 	if [ -z "${ret}" ]; then
 		fn_exit_with_error "Option --${1} is not declared"
@@ -116,14 +120,16 @@ function fn_option_enabled() {
 		return 0
 	fi
 	return 1
-}
+} # >>>
 
-function fn_option_disabled() {
+function fn_option_disabled()
+{ # <<<
 	! fn_option_enabled "${1}"
 	return
-}
+} # >>>
 
-function fn_forced_option() {
+function fn_forced_option()
+{ # <<<
 	# check first if it is declared as a regular option
 	local value=$(fn_option_value "${1}")
 	# should be at least defined as 'off'
@@ -139,7 +145,7 @@ function fn_forced_option() {
 
 	local cmd="declare -rg ${1}forced=\"${value}\""
 	eval "$cmd"
-}
+} # >>>
 
 fn_log "Command line : $0 $*"
 fn_getopts_init $@

@@ -16,9 +16,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-function fn_unset_command_output() {
+function fn_unset_command_output()
+{ # <<<
 	unset -v CMD_OUTPUT
-}
+} # >>>
 
 # ---
 # fn_get_previous_command_output 'foo'
@@ -26,16 +27,18 @@ function fn_unset_command_output() {
 #   Declare «foo» global variable with the output of previous runned command.
 #   Must be called only after «fn_run_command»
 # ---
-function fn_get_previous_command_output() {
+function fn_get_previous_command_output()
+{ # <<<
 	local -r myvar=$1
 	if [ ! -v CMD_OUTPUT ]; then
 		fn_exit_with_error 'empty internal variable CMD_OUTPUT, did you run fn_run_command ?'
 	fi
 	declare -g ${myvar}="${CMD_OUTPUT}"
 	fn_unset_command_output
-}
+} # >>>
 
-function fn_run_command() {
+function fn_run_command()
+{ # <<<
 	local ret=255
 	#set -o pipefail
 
@@ -64,10 +67,11 @@ function fn_run_command() {
 
 	fn_log "command exited with status: ${ret}"
 	return ${ret}
-}
+} # >>>
 
-function fn_log_and_run_command() {
+function fn_log_and_run_command()
+{ # <<<
 	fn_log "running command: $@"
 	fn_run_command "$@"
 	return $?
-}
+} # >>>

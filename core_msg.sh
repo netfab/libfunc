@@ -16,7 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-function fn_logs_init() {
+function fn_logs_init()
+{ # <<<
 	local -r programnameerror='You must set the ${programname} bash variable.'
 	local -r logsystemerror='You must set the ${logsystem} bash variable.'
 
@@ -66,52 +67,60 @@ function fn_logs_init() {
 			fn_exit_with_error "wrong \${logsystem} value : ${tmplog}"
 		;;
 	esac
-}
+} # >>>
 
 # ---
 # fn_print_status_tabs n
 #   --
 #   print n tabulations, n must be integer, min 1, max 7
 # ---
-function fn_print_status_tabs() {
+function fn_print_status_tabs()
+{ # <<<
 	local -ri num=$1
 	if [ ${num} -eq 0 ] || [ ${num} -gt 7 ]; then
 		fn_print_warn_msg "fn_print_status_tabs wrong num: ${num}"
 		return
 	fi
 	printf '\t%.s' $(seq 1 ${num}) >&2
-}
+} # >>>
 
-function fn_print_status_ok_eol() {
+function fn_print_status_ok_eol()
+{ # <<<
 	printf '%s\n' "[ OK ]" >&2
-}
+} # >>>
 
-function fn_print_msg() {
+function fn_print_msg()
+{ # <<<
 	fn_log "${@}"
 	printf '%s\n' "${@}"
-}
+} # >>>
 
-function fn_print_status_msg() {
+function fn_print_status_msg()
+{ # <<<
 	fn_log "${@}"
 	printf '%s\n' "${@}" >&2
-}
+} # >>>
 
-function fn_print_error_msg() {
+function fn_print_error_msg()
+{ # <<<
 	fn_log "[ ERROR ] ${@}"
 	printf '%s\n' "[ ERROR ] ${@}" >&2
-}
+} # >>>
 
-function fn_print_warn_msg() {
+function fn_print_warn_msg()
+{ # <<<
 	fn_log "[ WARN ] ${@}"
 	printf '%s\n' "[ WARN ] ${@}" >&2
-}
+} # >>>
 
-function fn_print_info_msg() {
+function fn_print_info_msg()
+{ # <<<
 	fn_log "[ INFO ] ${@}"
 	printf '%s\n' "[ INFO ] ${@}" >&2
-}
+} # >>>
 
-function fn_log() {
+function fn_log()
+{ # <<<
 	case "${logsystem}" in
 		'own')
 			printf '%s\n' "$(date '+%Y %b %d %H:%M:%S') $@" >> "${logrootdir}/${logfile}"
@@ -125,7 +134,7 @@ function fn_log() {
 		'off')
 			;;
 	esac
-}
+} # >>>
 
 fn_logs_init
 unset -f fn_logs_init

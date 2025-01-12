@@ -23,9 +23,10 @@ declare -r libfuncversion='0.1.2-dev'
 # used into core_getopts.sh
 declare -r daterun=$(date '+%Y-%m-%d-%H:%M:%S')
 
-function fn_redeclare_variable_ro() {
+function fn_redeclare_variable_ro()
+{ # <<<
 	declare -gr ${1}="${!1}"
-}
+} # >>>
 
 source "${libfuncdir}/core_ansi.sh"
 source "${libfuncdir}/core_exit.sh"
@@ -40,8 +41,8 @@ source "${libfuncdir}/core_command.sh"
 #
 #    http://www.freedesktop.org/wiki/Software/xdg-user-dirs
 # ---
-# function fn_setup_environment() <<<
-function fn_setup_environment() {
+function fn_setup_environment()
+{ # <<<
 	export MY_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 
 	local -r dirFile="$MY_CONFIG_HOME/user-dirs.dirs"

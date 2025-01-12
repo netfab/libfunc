@@ -20,8 +20,8 @@
 # Export to environment various ANSI variables.
 # http://wiki.archlinux.org/index.php/Color_Bash_Prompt
 # ---
-# function fn_export_ansi_vars() { <<<
-function fn_export_ansi_vars() {
+function fn_export_ansi_vars()
+{ # <<<
 	export TXTBLK='\e[0;30m' # Black - Regular
 	export TXTRED='\e[0;31m' # Red
 	export TXTGRN='\e[0;32m' # Green
