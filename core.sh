@@ -18,7 +18,7 @@
 
 export LANG=C
 
-declare -r libfuncversion='0.1.1'
+declare -r libfuncversion='0.1.2-dev'
 
 # used into core_getopts.sh
 declare -r daterun=$(date '+%Y-%m-%d-%H:%M:%S')
