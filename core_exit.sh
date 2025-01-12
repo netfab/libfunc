@@ -17,19 +17,18 @@
 #
 
 function fn_exit_with_status() {
-	fn_print_status_msg "$(basename ${BASH_SOURCE[2]}) : ${FUNCNAME[2]}[${BASH_LINENO[1]}] : exiting with status : $1"
+	local -r sourcefile=$(basename ${BASH_SOURCE[1]})
+	local -r funcname=${FUNCNAME[0]}
+	local -ri lineno=${BASH_LINENO[0]}
+	fn_print_status_msg "${sourcefile}[${lineno}] : ${funcname} : $1"
 	exit $1
 }
 
 function fn_exit_with_error() {
-	local sourcefile=""
-	for x in 1 0; do
-		if [ -n "${BASH_SOURCE[${x}]}" ]; then
-			sourcefile="$(basename ${BASH_SOURCE[${x}]})"
-			break
-		fi
-	done
-	fn_print_error_msg "${programname} : ${sourcefile} : $@"
+	local sourcefile=$(basename ${BASH_SOURCE[-1]})
+	local -r funcname=${FUNCNAME[0]}
+	local -ri lineno=${BASH_LINENO[0]}
+	fn_print_error_msg "${sourcefile}[${lineno}] : ${funcname} : $@"
 	fn_exit_with_status 2
 }
 
