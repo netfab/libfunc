@@ -54,44 +54,61 @@ function fn_getopts_init()
 	local -r optionserror='You must set the ${programoptions} bash variable'
 
 	local x y reqarg opt longopt
+	local -A provided
+
 	for x in ${programoptions:?${optionserror}}; do
+		if [[ -v want_value ]]; then
+			fn_exit_with_error "Option --${want_value} requires a value"
+		fi
+
 		reqarg='off'
 		opt=${x%%,*}
 		longopt=${x#*,}
+
 		if [ "${x:(-1)}" == ':' ]; then
 			reqarg='on'
 			longopt=${longopt:0:(-1)}
 		fi
 
+		provided["${longopt}"]=1
 		options["${longopt}"]='off'
-		#printf '%s\n' "$opt $longopt $reqarg"
 
 		for y in $@; do
-			#printf "%s %s\n" "${longopt} $y"
+			#printf "%s\n" "$opt $longopt $reqarg $y"
 
-			if [ ${options["${longopt}"]} != 'off' ]; then
-				if [ "${reqarg}" == 'on' ]; then
-					if [ "${y:0:1}" == '-' ]; then
-						fn_exit_with_error "Option --${longopt} requires an argument"
-					fi
-					options["${longopt}"]="${y}"
-					reqarg='off'
+			if [[ -v want_value ]]; then
+				if [ "${y:0:1}" == '-' ]; then
+					fn_exit_with_error "Option --${want_value} requires a value"
+				fi
+				options["${longopt}"]=${y}
+				provided["${longopt}"]=0
+				unset -v want_value
+				continue
+			fi
+
+			if [[ "${y}" == "-${opt}" ]] || [[ "${y}" == "--${longopt}" ]]; then
+				if [[ ${provided["${longopt}"]} -eq 0 ]]; then
+					fn_exit_with_error "Option --${longopt} already provided"
 				fi
 
-				#printf '%s\n' "skipping ${longopt}\n"
-				continue
-			fi
-
-			if [ "${y}" == "-${opt}" ] || [ "${y}" == "--${longopt}" ]; then
-				options["${longopt}"]='on'
-				continue
+				if [[ "${reqarg}" == 'off' ]]; then
+					if [[ ${provided["${longopt}"]} -eq 1 ]]; then
+						provided["${longopt}"]=0
+						options["${longopt}"]='on'
+					fi
+				else
+					if [[ ${provided["${longopt}"]} -eq 1 ]]; then
+						local want_value=${longopt}
+						continue
+					fi
+				fi
 			fi
 		done
-
-		if [ "${reqarg}" == 'on' ] && [ "${options["${longopt}"]}" == 'on' ]; then
-			fn_exit_with_error "Option --${longopt} requires an argument"
-		fi
 	done
+
+	if [[ -v want_value ]]; then
+		fn_exit_with_error "Option --${want_value} requires a value"
+	fi
 
 	fn_getopts_check_options $@
 	unset -f fn_getopts_check_options
